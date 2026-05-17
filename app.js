@@ -1,13 +1,17 @@
 const express = require("express");
 const app = express();
 const path = require("node:path");
-const usersRouter = require("./routes/usersRouter");
+const indexRouter = require("./routes/indexRouter");
+const itemsRouter = require("./routes/itemsRouter");
+const categoriesRouter = require("./routes/categoriesRouter");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/", usersRouter);
+app.use("/", indexRouter);
+app.use("/items", itemsRouter);
+app.use("/categories", categoriesRouter);
 
 app.use((err, req, res, next) => {
     console.error(err);
