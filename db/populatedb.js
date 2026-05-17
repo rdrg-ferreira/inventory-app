@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-import { argv } from "node:process";
+const { argv } = require("node:process");
 const { Client } = require("pg");
 
 const SQL = `
@@ -44,11 +44,11 @@ async function main() {
 
     const dbUrl = argv[2];
 
-    const host = process.env.HOST;
-    const user = process.env.USER;
-    const db = process.env.DATABASE;
-    const pw = process.env.PASSWORD;
-    const port = process.env.PORT;
+    const host = process.env.DB_HOST;
+    const user = process.env.DB_USER;
+    const db = process.env.DB_NAME;
+    const pw = process.env.DB_PASSWORD;
+    const port = process.env.DB_PORT;
     const builtUrl = `postgresql://${user}:${pw}@${host}:${port}/${db}`;
 
     const client = new Client({

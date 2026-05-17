@@ -1,10 +1,10 @@
 const { Pool } = require("pg");
 
-const host = process.env.HOST;
-const user = process.env.USER;
-const db = process.env.DATABASE;
-const pw = process.env.PASSWORD;
-const port = process.env.PORT;
+const host = process.env.DB_HOST;
+const user = process.env.DB_USER;
+const db = process.env.DB_NAME;
+const pw = process.env.DB_PASSWORD;
+const port = process.env.DB_PORT;
 const builtUrl = `postgresql://${user}:${pw}@${host}:${port}/${db}`;
 
 module.exports = new Pool({
