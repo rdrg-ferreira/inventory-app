@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Inventory Application</title>
+</head>
+<body>
+  <%- include('../header') %>
+  <main>
+    <div class="search-features">
+        <!--search-->
+    </div>
+    <div class="categories-container grid">
+        <% categories.forEach(c => { %>
+            <%- include('category_card', { name: c.name }) %>
+        <% }) %>
+    </div>
+  </main>
+</body>
+</html>

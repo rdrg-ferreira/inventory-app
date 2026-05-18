@@ -4,7 +4,7 @@ async function getItemsPage(req, res) {
     const items = await db.getItems();
     const categories = await db.getCategories();
 
-    res.render("items", {
+    res.render("items_page/items", {
         items,
         categories,
     })

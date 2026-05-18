@@ -18,11 +18,11 @@ const SQL = `
         RETURNING id, name
     ), inserted_items AS (
         INSERT INTO item (name, description, quantity, image_file_name) VALUES
-            ('Apple', 'Fresh crisp apples', 24, 'apple.jpg'),
-            ('Milk', 'Whole milk from local farms', 12, 'milk.jpg'),
-            ('Bread', 'Soft sandwich bread', 18, 'bread.jpg'),
-            ('Cheese Pizza', 'Thin crust pizza with mozzarella', 8, 'pizza.jpg'),
-            ('Sparkling Water', 'Plain sparkling water', 30, 'water.jpg')
+            ('Apple', 'Fresh crisp apples', 24, 'apple.png'),
+            ('Milk', 'Whole milk from local farms', 12, 'milk.png'),
+            ('Bread', 'Soft sandwich bread', 18, 'bread.png'),
+            ('Cheese Pizza', 'Thin crust pizza with mozzarella', 8, 'pizza.png'),
+            ('Sparkling Water', 'Plain sparkling water', 30, 'water.png')
         RETURNING id, name
     )
     INSERT INTO item_category (item_id, category_id)

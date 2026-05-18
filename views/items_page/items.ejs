@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Inventory Application</title>
+</head>
+<body>
+  <%- include('../header') %>
+  <main>
+    <div class="search-features">
+        <!--order by-->
+        <!--filter-->
+        <!--search-->
+    </div>
+    <div class="items-container grid">
+        <% items.forEach(i => { %>
+            <%- include('item_card', { name: i.name, quantity: i.quantity, img: i.image_file_name }) %>
+        <% }) %>
+    </div>
+  </main>
+</body>
+</html>
