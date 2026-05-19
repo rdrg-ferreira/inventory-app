@@ -59,9 +59,35 @@ async function updateItem(id, name, description, quantity, category_id) {
     }
 }
 
+async function deleteItem(id) {
+    const client = await pool.connect();
+    try {
+        let rowCount = 0;
+        await client.query('BEGIN');
+
+        const has_category = await client.query("SELECT item_id FROM item_category WHERE item_id = $1", [id]);
+        if (has_category.rowCount === 1) {
+            const res1 = await client.query('DELETE FROM item_category WHERE item_id = $1', [id]);
+            rowCount++;
+        }
+
+        const res2 = await client.query("DELETE FROM item WHERE id = $1", [id]);
+        rowCount += res2.rowCount;
+
+        await client.query('COMMIT');
+        return rowCount;
+    } catch (err) {
+        await client.query('ROLLBACK');
+        throw err;
+    } finally {
+        client.release();
+    }
+}
+
 module.exports = {
     getItems,
     getCategories,
     getItem,
     updateItem,
+    deleteItem,
 };

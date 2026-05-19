@@ -38,9 +38,16 @@ async function updateItem(req, res) {
     if (rowCount === 2) res.redirect(`/items/${id}`);
 }
 
+async function deleteItem(req, res) {
+    const id = req.params.itemId;
+    const rowCount = await db.deleteItem(id);
+    res.redirect("/items");
+}
+
 module.exports = {
     getItemsPage,
     getItem,
     getItemUpdateForm,
     updateItem,
+    deleteItem,
 };
