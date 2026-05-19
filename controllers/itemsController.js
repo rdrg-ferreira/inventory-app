@@ -10,6 +10,16 @@ async function getItemsPage(req, res) {
     })
 }
 
+async function getItem(req, res) {
+    const id = req.params.itemId;
+    const item = await db.getItem(id);
+
+    res.render("item", {
+        item,
+    });
+}
+
 module.exports = {
     getItemsPage,
+    getItem,
 };
