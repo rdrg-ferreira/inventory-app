@@ -3,12 +3,17 @@ const { argv } = require("node:process");
 const { Client } = require("pg");
 
 const SQL = `
+    DROP TABLE IF EXISTS item_category;
+    DROP TABLE IF EXISTS item;
+    DROP TABLE IF EXISTS category;
+    DROP SEQUENCE IF EXISTS item_id_seq;
+    DROP SEQUENCE IF EXISTS category_id_seq;
+
     CREATE TABLE item (
         id		 BIGSERIAL,
         name		 VARCHAR(512) NOT NULL,
         description	 VARCHAR(512),
         quantity	 BIGINT NOT NULL DEFAULT 0,
-        image_file_name VARCHAR(512),
         PRIMARY KEY(id)
     );
 

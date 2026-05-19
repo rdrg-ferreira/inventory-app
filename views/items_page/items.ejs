@@ -13,7 +13,7 @@
     </div>
     <div class="items-container grid">
         <% items.forEach(i => { %>
-            <%- include('item_card', { name: i.name, quantity: i.quantity, img: i.image_file_name, id: i.id }) %>
+            <%- include('item_card', { name: i.name, quantity: i.quantity, id: i.id }) %>
         <% }) %>
     </div>
   </main>

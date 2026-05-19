@@ -14,12 +14,31 @@ async function getItem(req, res) {
     const id = req.params.itemId;
     const item = await db.getItem(id);
 
-    res.render("item", {
+    res.render("item_page/item", {
         item,
     });
+}
+
+async function getItemUpdateForm(req, res) {
+    const id = req.params.itemId;
+    const item = await db.getItem(id);
+
+    res.render("item_page/update", {
+        item,
+    });
+}
+
+async function updateItem(req, res) {
+    const id = req.params.itemId;
+    const { name, description, quantity } = req.body;
+    const rowCount = await db.updateItem(id, name, description, quantity);
+
+    if (rowCount === 1) res.redirect(`/items/${id}`);
 }
 
 module.exports = {
     getItemsPage,
     getItem,
+    getItemUpdateForm,
+    updateItem,
 };

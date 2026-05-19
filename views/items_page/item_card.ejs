@@ -1,11 +1,4 @@
 <div class="item-card">
-    <div class="img-container">
-        <% if (img !== undefined) { %>
-            <img src="/<%= img %>" alt="<%= name %>">
-        <% } else { %>
-            <div style="background-color: bisque;"></div>
-        <% } %>
-    </div>
     <div class="info-container">
         <a href="/items/<%= id %>"><%= name %></a>
         <div class="quantity"><%= quantity %> 📦</div>
