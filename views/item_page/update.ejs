@@ -20,6 +20,24 @@
             <label for="quantity">Quantity</label>
             <input type="number" id="quantity" name="quantity" value="<%= item.quantity %>" min="0" required>
         </div>
+        <div class="input">
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <% if (item.category_id == -1) { %>
+                    <option value="-1" selected>None</option>
+                <% } else { %>
+                    <option value="-1">None</option>
+                <% } %>
+                
+                <% categories.forEach(c => { %>
+                    <% if (c.id === item.category_id) { %>
+                        <option value="<%= c.id %>" selected><%= c.name %></option>
+                    <% } else { %>
+                        <option value="<%= c.id %>"><%= c.name %></option>
+                    <% } %>
+                <% }) %>
+            </select>
+        </div>
         <button type="submit">Update</button>
     </form>
   </main>

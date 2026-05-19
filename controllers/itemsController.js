@@ -22,18 +22,20 @@ async function getItem(req, res) {
 async function getItemUpdateForm(req, res) {
     const id = req.params.itemId;
     const item = await db.getItem(id);
+    const categories = await db.getCategories();
 
     res.render("item_page/update", {
         item,
+        categories,
     });
 }
 
 async function updateItem(req, res) {
     const id = req.params.itemId;
-    const { name, description, quantity } = req.body;
-    const rowCount = await db.updateItem(id, name, description, quantity);
+    const { name, description, quantity, category } = req.body;
+    const rowCount = await db.updateItem(id, name, description, quantity, category);
 
-    if (rowCount === 1) res.redirect(`/items/${id}`);
+    if (rowCount === 2) res.redirect(`/items/${id}`);
 }
 
 module.exports = {

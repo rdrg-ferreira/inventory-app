@@ -13,7 +13,7 @@
     </div>
     <div class="items-container grid">
         <% items.forEach(i => { %>
-            <%- include('item_card', { name: i.name, quantity: i.quantity, id: i.id }) %>
+            <%- include('item_card', { name: i.name, quantity: i.quantity, id: i.id, category: i.category }) %>
         <% }) %>
     </div>
   </main>

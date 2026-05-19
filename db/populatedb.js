@@ -13,8 +13,7 @@ const SQL = `
         INSERT INTO category (name) VALUES
             ('Produce'),
             ('Dairy'),
-            ('Bakery'),
-            ('Prepared')
+            ('Bakery')
         RETURNING id, name
     ), inserted_items AS (
         INSERT INTO item (name, description, quantity) VALUES
@@ -32,8 +31,7 @@ const SQL = `
         (inserted_items.name = 'Apple' AND inserted_categories.name = 'Produce') OR
         (inserted_items.name = 'Milk' AND inserted_categories.name = 'Dairy') OR
         (inserted_items.name = 'Bread' AND inserted_categories.name = 'Bakery') OR
-        (inserted_items.name = 'Cheese Pizza' AND inserted_categories.name = 'Dairy') OR
-        (inserted_items.name = 'Cheese Pizza' AND inserted_categories.name = 'Prepared')
+        (inserted_items.name = 'Cheese Pizza' AND inserted_categories.name = 'Dairy')
     );
 
     COMMIT;

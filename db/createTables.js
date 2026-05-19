@@ -11,8 +11,8 @@ const SQL = `
 
     CREATE TABLE item (
         id		 BIGSERIAL,
-        name		 VARCHAR(512) NOT NULL,
-        description	 VARCHAR(512),
+        name	 VARCHAR(512) NOT NULL,
+        description VARCHAR(512),
         quantity	 BIGINT NOT NULL DEFAULT 0,
         PRIMARY KEY(id)
     );
@@ -25,8 +25,8 @@ const SQL = `
 
     CREATE TABLE item_category (
         item_id	 BIGINT,
-        category_id BIGINT,
-        PRIMARY KEY(item_id,category_id)
+        category_id BIGINT NOT NULL,
+        PRIMARY KEY(item_id)
     );
 
     ALTER TABLE item_category ADD CONSTRAINT item_category_fk1 FOREIGN KEY (item_id) REFERENCES item(id);
