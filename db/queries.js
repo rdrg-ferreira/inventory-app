@@ -113,6 +113,45 @@ async function createItem(name, description, quantity, category_id) {
     }
 }
 
+async function createCategory(name) {
+    const query = "INSERT INTO category (name) VALUES ($1) RETURNING id";
+    const values = [name];
+    const res = await pool.query(query, values);
+    return res.rows[0].id;
+}
+
+async function getCategory(id) {
+    const query = "SELECT * FROM category WHERE id = $1";
+    const values = [id];
+    const res = await pool.query(query, values);
+    return res.rows[0];
+}
+
+async function updateCategory(id, name) {
+    const query = "UPDATE category SET name = $1 WHERE id = $2";
+    const values = [name, id];
+    const res = await pool.query(query, values);
+    return res.rowCount;
+}
+
+async function deleteCategory(id) {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+        const res1 = await client.query("DELETE FROM item_category WHERE category_id = $1", [id]);
+
+        const res2 = await client.query("DELETE FROM category WHERE id = $1", [id]);
+
+        await client.query('COMMIT');
+        return res1.rowCount + res2.rowCount;
+    } catch (err) {
+        await client.query('ROLLBACK');
+        throw err;
+    } finally {
+        client.release();
+    }
+}
+
 module.exports = {
     getItems,
     getCategories,
@@ -120,4 +159,8 @@ module.exports = {
     updateItem,
     deleteItem,
     createItem,
+    createCategory,
+    getCategory,
+    updateCategory,
+    deleteCategory,
 };

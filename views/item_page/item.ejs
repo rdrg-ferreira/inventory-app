@@ -4,8 +4,8 @@
   <title>Inventory Application</title>
   <script defer>
     function handleDeleteItemClick() {
-        const modal = document.querySelector("div.class-modal");
-        modal.classList.toggle("hidden");
+        const modal = document.querySelector("div.delete-modal");
+        modal.style.display = modal.style.display === "none" ? "block" : "none";
     }
   </script>
 </head>
@@ -19,15 +19,15 @@
         <span><%= item.quantity %>📦</span>
         <div class="actions">
             <a href="/items/<%= item.id %>/update">Edit item</a>
-            <button onclick="handleDeleteItemClick">Delete item</button>
+            <button onclick="handleDeleteItemClick()">Delete item</button>
         </div>
     </div>
   </main>
-  <div class="delete-modal hidden">
+  <div class="delete-modal" style="display: none;">
     <span>Are you sure you want to delete this item?</span>
     <form class="actions" action="/items/<%= item.id %>/delete" method="post">
         <button type="submit">Yes</button>
-        <button onclick="handleDeleteItemClick">No</button>
+        <button type="button" onclick="handleDeleteItemClick()">No</button>
     </form>
   </div>
 </body>

@@ -2,18 +2,40 @@
 <html>
 <head>
   <title>Inventory Application</title>
+  <script defer>
+    function handleDeleteCategoryClick(id) {
+        const modal = document.querySelector("div.delete-modal");
+        modal.style.display = "block";
+        modal.querySelector("form").action = `/categories/${id}/delete`;
+    }
+
+    function closeDeleteCategoryModal() {
+        const modal = document.querySelector("div.delete-modal");
+        modal.style.display = "none";
+        modal.querySelector("form").action = "";
+    }
+  </script>
 </head>
 <body>
   <%- include('../header') %>
   <main>
-    <div class="search-features">
-        <!--search-->
+    <div class="features">
+        <div class="search"><!--search--></div>
+        <a href="/categories/new">Add category</a>
     </div>
     <div class="categories-container grid">
         <% categories.forEach(c => { %>
-            <%- include('category_card', { name: c.name }) %>
+            <%- include('category_card', { name: c.name, id: c.id }) %>
         <% }) %>
     </div>
   </main>
+  <div class="delete-modal" style="display: none;">
+    <span>Are you sure you want to delete this category?</span>
+    <span>This will put all the items that use this category as uncategorized</span>
+    <form class="actions" action="" method="post">
+        <button type="submit">Yes</button>
+        <button type="button" onclick="closeDeleteCategoryModal()">No</button>
+    </form>
+  </div>
 </body>
 </html>

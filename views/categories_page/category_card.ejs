@@ -3,7 +3,7 @@
         <%= name %>
     </span>
     <div class="actions">
-        <%# edit %>
-        <%# delete %>
+        <a href="/categories/<%= id %>/update">Edit</a>
+        <button type="button" data-category-id="<%= id %>" onclick="handleDeleteCategoryClick(this.dataset.categoryId)">Delete category</button>
     </div>
 </div>
