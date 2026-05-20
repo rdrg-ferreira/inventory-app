@@ -6,8 +6,9 @@
 <body>
   <%- include('../header') %>
   <main>
-    <form action="/items/<%= item.id %>/update" method="post">
-        <h1>Edit item</h1>
+    <% const item = locals.item || { name: "", description: "", quantity: "", category_id: "-1" }; %>
+    <form action="<%= formAction %>" method="post">
+        <h1><%= title %></h1>
         <div class="input">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" value="<%= item.name %>" required>
@@ -38,7 +39,7 @@
                 <% }) %>
             </select>
         </div>
-        <button type="submit">Update</button>
+        <button type="submit"><%= title === "Edit item" ? "Update" : "Create" %></button>
     </form>
   </main>
 </body>

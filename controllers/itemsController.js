@@ -24,9 +24,11 @@ async function getItemUpdateForm(req, res) {
     const item = await db.getItem(id);
     const categories = await db.getCategories();
 
-    res.render("item_page/update", {
+    res.render("item_page/form", {
         item,
         categories,
+        formAction: `/items/${id}/update`,
+        title: "Edit item",
     });
 }
 
@@ -44,10 +46,28 @@ async function deleteItem(req, res) {
     res.redirect("/items");
 }
 
+async function getNewItemForm(req, res) {
+    const categories = await db.getCategories();
+
+    res.render("item_page/form", {
+        categories,
+        formAction: `/items/new`,
+        title: "Create item",
+    });
+}
+
+async function createItem(req, res) {
+    const { name, description, quantity, category } = req.body;
+    const newId = await db.createItem(name, description, quantity, category);
+    res.redirect(`/items/${newId}`);
+}
+
 module.exports = {
     getItemsPage,
     getItem,
     getItemUpdateForm,
     updateItem,
     deleteItem,
+    getNewItemForm,
+    createItem,
 };

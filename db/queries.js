@@ -84,10 +84,40 @@ async function deleteItem(id) {
     }
 }
 
+async function createItem(name, description, quantity, category_id) {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+        const res1 = await client.query(
+            'INSERT INTO item (name, description, quantity) VALUES ($1, $2, $3) RETURNING id',
+            [name, description, quantity]
+        );
+        const newId = res1.rows[0].id;
+        if (category_id === "-1") {
+            await client.query('COMMIT');
+            return newId;
+        }
+
+        const res2 = await client.query(
+            'INSERT INTO item_category (item_id, category_id) VALUES ($1, $2)',
+            [newId, category_id]
+        );
+
+        await client.query('COMMIT');
+        return newId;
+    } catch (err) {
+        await client.query('ROLLBACK');
+        throw err;
+    } finally {
+        client.release();
+    }
+}
+
 module.exports = {
     getItems,
     getCategories,
     getItem,
     updateItem,
     deleteItem,
+    createItem,
 };
