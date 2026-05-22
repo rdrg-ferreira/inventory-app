@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 const { argv } = require("node:process");
 const { Client } = require("pg");
+const { getSslConfig } = require("./sslConfig");
 
 const SQL = `
     DROP TABLE IF EXISTS item_category;
@@ -44,9 +45,11 @@ async function main() {
     const pw = process.env.DB_PASSWORD;
     const port = process.env.DB_PORT;
     const builtUrl = `postgresql://${user}:${pw}@${host}:${port}/${db}`;
+    const connectionString = dbUrl ? dbUrl : builtUrl;
 
     const client = new Client({
-        connectionString: dbUrl ? dbUrl : builtUrl,
+        connectionString,
+        ssl: getSslConfig(connectionString),
     });
     await client.connect();
     await client.query(SQL);

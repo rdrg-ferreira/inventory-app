@@ -34,8 +34,8 @@ async function getItemUpdateForm(req, res) {
 }
 
 const validateItem = [
-    body("name").trim().notEmpty().withMessage("Name can not be empty.").isAlphanumeric().withMessage("Name must only contain alphabet letters and/or numbers."),
-    body("description").trim().optional({ checkFalsy: true }).isAlphanumeric().withMessage("Description must only contain alphabet letters and/or numbers."),
+    body("name").trim().notEmpty().withMessage("Name can not be empty.").matches(/^[a-zA-Z0-9 ]+$/).withMessage("Name must only contain alphabet letters, numbers, and spaces."),
+    body("description").trim().optional({ checkFalsy: true }).matches(/^[a-zA-Z0-9 ]+$/).withMessage("Description must only contain alphabet letters, numbers, and spaces."),
     body("quantity").trim().notEmpty().withMessage("Quantity can not be empty.").isInt().withMessage("Quantity must be an integer."),
     body("category").toInt(),
 ];

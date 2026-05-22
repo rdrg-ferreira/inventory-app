@@ -17,7 +17,7 @@ function getNewCategoryForm(req, res) {
 }
 
 const validateCategory = [
-    body("name").trim().notEmpty().withMessage("Name can not be empty.").isAlphanumeric().withMessage("Name must only contain alphabet letters and/or numbers."),
+    body("name").trim().notEmpty().withMessage("Name can not be empty.").matches(/^[a-zA-Z0-9 ]+$/).withMessage("Name must only contain alphabet letters, numbers, and spaces."),
 ];
 
 const createCategory = [

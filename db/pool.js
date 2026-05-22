@@ -1,4 +1,5 @@
 const { Pool } = require("pg");
+const { getSslConfig } = require("./sslConfig");
 
 const host = process.env.DB_HOST;
 const user = process.env.DB_USER;
@@ -8,5 +9,6 @@ const port = process.env.DB_PORT;
 const builtUrl = `postgresql://${user}:${pw}@${host}:${port}/${db}`;
 
 module.exports = new Pool({
-    connectionString: process.env.PROD_DB_INTERNAL_URL ?? builtUrl
+    connectionString: process.env.PROD_DB_INTERNAL_URL ?? builtUrl,
+    ssl: getSslConfig(process.env.PROD_DB_INTERNAL_URL ?? builtUrl),
 });
