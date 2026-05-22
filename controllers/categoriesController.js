@@ -1,4 +1,5 @@
 const db = require("../db/queries");
+const { body, validationResult, matchedData } = require("express-validator");
 
 async function getCategoriesPage(req, res) {
     const categories = await db.getCategories();
@@ -15,11 +16,28 @@ function getNewCategoryForm(req, res) {
     });
 }
 
-async function createCategory(req, res) {
-    const { name } = req.body;
-    const newId = await db.createCategory(name);
-    res.redirect("/categories");
-}
+const validateCategory = [
+    body("name").trim().notEmpty().withMessage("Name can not be empty.").isAlphanumeric().withMessage("Name must only contain alphabet letters and/or numbers."),
+];
+
+const createCategory = [
+    validateCategory,
+    async (req, res) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).render("categories_page/form", {
+                formAction: "/categories/new",
+                title: "Create category",
+                errors: errors.array(),
+            });
+        }
+
+        const { name } = matchedData(req);
+        const newId = await db.createCategory(name);
+        res.redirect("/categories");
+    }
+];
 
 async function getUpdateCategoryForm(req, res) {
     const id = req.params.categoryId;
@@ -31,12 +49,28 @@ async function getUpdateCategoryForm(req, res) {
     });
 }
 
-async function updateCategory(req, res) {
-    const { name } = req.body;
-    const id = req.params.categoryId;
-    const rowCount = await db.updateCategory(id, name);
-    res.redirect("/categories");
-}
+const updateCategory = [
+    validateCategory,
+    async (req, res) => {
+        const errors = validationResult(req);
+        const id = req.params.categoryId;
+
+        if (!errors.isEmpty()) {
+            const category = await db.getCategory(id);
+
+            return res.status(400).render("categories_page/form", {
+                title: "Edit category",
+                formAction: `/categories/${id}/update`,
+                category: category,
+                errors: errors.array(),
+            });
+        }
+
+        const { name } = matchedData(req);
+        const rowCount = await db.updateCategory(id, name);
+        res.redirect("/categories");
+    }
+];
 
 async function deleteCategory(req, res) {
     const id = req.params.categoryId;

@@ -1,4 +1,5 @@
 const db = require("../db/queries");
+const { body, validationResult, matchedData } = require("express-validator");
 
 async function getItemsPage(req, res) {
     const items = await db.getItems();
@@ -32,13 +33,38 @@ async function getItemUpdateForm(req, res) {
     });
 }
 
-async function updateItem(req, res) {
-    const id = req.params.itemId;
-    const { name, description, quantity, category } = req.body;
-    const rowCount = await db.updateItem(id, name, description, quantity, category);
+const validateItem = [
+    body("name").trim().notEmpty().withMessage("Name can not be empty.").isAlphanumeric().withMessage("Name must only contain alphabet letters and/or numbers."),
+    body("description").trim().optional({ checkFalsy: true }).isAlphanumeric().withMessage("Description must only contain alphabet letters and/or numbers."),
+    body("quantity").trim().notEmpty().withMessage("Quantity can not be empty.").isInt().withMessage("Quantity must be an integer."),
+    body("category").toInt(),
+];
 
-    if (rowCount === 2) res.redirect(`/items/${id}`);
-}
+const updateItem = [
+    validateItem,
+    async (req, res) => {
+        const errors = validationResult(req);
+        const id = req.params.itemId;
+
+        if (!errors.isEmpty()) {
+            const item = await db.getItem(id);
+            const categories = await db.getCategories();
+
+            return res.status(400).render("item_page/form", {
+                item,
+                categories,
+                formAction: `/items/${id}/update`,
+                title: "Edit item",
+                errors: errors.array(),
+            });
+        }
+
+        const { name, description, quantity, category } = matchedData(req);
+        const rowCount = await db.updateItem(id, name, description, quantity, category);
+
+        if (rowCount === 2) res.redirect(`/items/${id}`);
+    }
+];
 
 async function deleteItem(req, res) {
     const id = req.params.itemId;
@@ -56,11 +82,27 @@ async function getNewItemForm(req, res) {
     });
 }
 
-async function createItem(req, res) {
-    const { name, description, quantity, category } = req.body;
-    const newId = await db.createItem(name, description, quantity, category);
-    res.redirect(`/items/${newId}`);
-}
+const createItem = [
+    validateItem,
+    async (req, res) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            const categories = await db.getCategories();
+
+            return res.status(400).render("item_page/form", {
+                categories,
+                formAction: `/items/new`,
+                title: "Create item",
+                errors: errors.array(),
+            });
+        }
+
+        const { name, description, quantity, category } = matchedData(req);
+        const newId = await db.createItem(name, description, quantity, category);
+        res.redirect(`/items/${newId}`);
+    }
+];
 
 module.exports = {
     getItemsPage,

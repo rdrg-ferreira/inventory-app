@@ -9,6 +9,7 @@
     <% const item = locals.item || { name: "", description: "", quantity: "", category_id: "-1" }; %>
     <form action="<%= formAction %>" method="post">
         <h1><%= title %></h1>
+        <%- include("../errors.ejs") %>
         <div class="input">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" value="<%= item.name %>" required>
