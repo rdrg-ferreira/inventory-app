@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Inventory Application</title>
+  <link rel="stylesheet" href="/styles.css">
   <script defer>
     function handleDeleteItemClick() {
         const modal = document.querySelector("div.delete-modal");
@@ -17,7 +18,7 @@
         <span><%= item.category %></span>
         <p><%= item.description %></p>
         <span><%= item.quantity %>📦</span>
-        <div class="actions">
+        <div class="actions" style="margin-top: 24px;">
             <a href="/items/<%= item.id %>/update">Edit item</a>
             <button onclick="handleDeleteItemClick()">Delete item</button>
         </div>
