@@ -8,5 +8,5 @@ const port = process.env.DB_PORT;
 const builtUrl = `postgresql://${user}:${pw}@${host}:${port}/${db}`;
 
 module.exports = new Pool({
-    connectionString: builtUrl
+    connectionString: process.env.PROD_DB_INTERNAL_URL ?? builtUrl
 });
